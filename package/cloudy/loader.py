@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 from cc_pathlib import Path
 
-def open_pcd(pth) :
+def load_pcd(pth) :
 	h_lst = ['x', 'y', 'z', 'reflectance', 'azimuth', 'elevation', 'distance', 'line_no', 'eye_no']
 	m_map = {
 		0 : collections.defaultdict(list),
@@ -26,12 +26,12 @@ def open_pcd(pth) :
 			assert len(v_lst) == len(h_lst)
 			m_map[eye_no][line_no].append([azimuth, elevation, distance, reflectance])
 			
-	Path("test.json").save(m_map, filter_opt={'verbose':True})			
+	# Path("test.json").save(m_map, filter_opt={'verbose':True})			
+	# Path("test.pickle.br").save(m_map)			
 	
 	for e in m_map :
 		for n in m_map[e] :
 			m_map[e][n] = np.array(m_map[e][n])
-			# print(e, n, m_map[e][n].shape)
 		print(min(m_map[e].keys()), max(m_map[e].keys()))
 
 	return m_map
