@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import math
+import random
 
 from cc_pathlib import Path
 
@@ -45,17 +46,28 @@ if False :
 
 dist_arr = np.zeros((h, h), dtype=np.uint8)
 
-r = math.cos(math.radians(255/32))
+r = math.cos(math.radians(255/64))
 
-for m in range(h) :
+d_lst = list()
+m_lst = list(range(h))
+# random.shuffle(m_lst)
+for m in m_lst :
+	# print(m)
 	i = 0
 	for n in range(m) :
 		u = np.sum(xyz_arr[m,:] * xyz_arr[n,:])
 		if u > r :
+			# d_lst.append(math.degrees(math.acos(u)))
 			# print(u, math.acos(u), math.degrees(math.acos(u)) * 32)
-			dist_arr[m,n] = int(math.degrees(math.acos(u)) * 32)
+			dist_arr[m,n] = int(math.degrees(math.acos(u)) * 64)
 			i += 1
 	print(m, h, i, 100.0 * m / h)
 
+if False :
+	print(f"len={len(d_lst)} min={min(d_lst)} max={max(d_lst)}")
+	plt.figure()
+	plt.plot(sorted(d_lst))
+	plt.grid()
+	plt.show()
 print("save")
 Path("dst_arr.npy.br").save(dist_arr)
