@@ -44,22 +44,22 @@ if False :
 	ax.set_zlabel('Z')
 	plt.show()
 
-dist_arr = np.zeros((h, h), dtype=np.float16)
+dist_arr = np.zeros((h, h), dtype=np.uint8)
 
-r = math.cos(math.radians(4.0))
+r = math.cos(math.radians(255 / 128))
 
 d_lst = list()
 m_lst = list(range(h))
 # random.shuffle(m_lst)
 for m in m_lst :
-	# print(m)
 	i = 0
 	for n in range(m) :
 		u = np.sum(xyz_arr[m,:] * xyz_arr[n,:])
 		if u > r :
 			# d_lst.append(math.degrees(math.acos(u)))
 			# print(u, math.acos(u), math.degrees(math.acos(u)) * 32)
-			dist_arr[m,n] = int(math.degrees(math.acos(u)) * 64)
+			z = int(round(math.degrees(math.acos(u)) * 128))
+			dist_arr[m,n] = min(z, 255)
 			i += 1
 	print(m, h, i, 100.0 * m / h)
 
@@ -70,4 +70,4 @@ if False :
 	plt.grid()
 	plt.show()
 print("save")
-Path("dst_arr.npy.br").save(dist_arr)
+Path("dst_arr_uint8_2deg.npy.br").save(dist_arr)
